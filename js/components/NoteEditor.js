@@ -30,9 +30,9 @@ const NoteEditor = {
         const slideoverTitle = document.getElementById('slideoverTitle');
         slideoverTitle.textContent = this.truncateTitle(paperTitle);
 
-        // Load notes into editor
+        // Load notes into editor (contenteditable uses innerHTML)
         const noteEditor = document.getElementById('noteEditor');
-        noteEditor.value = paper.notes || '';
+        noteEditor.innerHTML = paper.notes || '';
 
         // Show the slide-over
         const overlay = document.getElementById('slideoverOverlay');
@@ -44,8 +44,9 @@ const NoteEditor = {
         // Focus the editor
         setTimeout(() => noteEditor.focus(), 300);
 
-        // Set up auto-save
+        // Set up auto-save and image paste
         this.setupAutoSave();
+        this.setupImagePaste();
     },
 
     /**
@@ -97,6 +98,69 @@ const NoteEditor = {
     },
 
     /**
+     * Set up image paste functionality
+     */
+    setupImagePaste() {
+        const noteEditor = document.getElementById('noteEditor');
+
+        noteEditor.addEventListener('paste', (e) => {
+            const items = e.clipboardData?.items;
+            if (!items) return;
+
+            // Check if clipboard contains an image
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    e.preventDefault(); // Prevent default paste behavior
+
+                    const blob = items[i].getAsFile();
+                    const reader = new FileReader();
+
+                    reader.onload = (event) => {
+                        // Create an image element
+                        const img = document.createElement('img');
+                        img.src = event.target.result; // base64 data URL
+                        img.style.maxWidth = '100%';
+                        img.style.height = 'auto';
+
+                        // Insert the image at cursor position
+                        const selection = window.getSelection();
+                        if (selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0);
+                            range.deleteContents();
+                            range.insertNode(img);
+
+                            // Move cursor after the image
+                            range.setStartAfter(img);
+                            range.setEndAfter(img);
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+
+                            // Add a line break after image for better UX
+                            const br = document.createElement('br');
+                            range.insertNode(br);
+                        } else {
+                            // If no selection, append to end
+                            noteEditor.appendChild(img);
+                            noteEditor.appendChild(document.createElement('br'));
+                        }
+
+                        // Trigger auto-save
+                        if (this.autoSaveTimeout) {
+                            clearTimeout(this.autoSaveTimeout);
+                        }
+                        this.autoSaveTimeout = setTimeout(() => {
+                            this.saveNotes(true);
+                        }, 3000);
+                    };
+
+                    reader.readAsDataURL(blob);
+                    break; // Only handle first image
+                }
+            }
+        });
+    },
+
+    /**
      * Save notes to storage
      * @param {boolean} showToast - Whether to show the "Saved!" toast
      */
@@ -106,7 +170,7 @@ const NoteEditor = {
         }
 
         const noteEditor = document.getElementById('noteEditor');
-        const notes = noteEditor.value;
+        const notes = noteEditor.innerHTML;
 
         try {
             await Storage.updatePaperNotes(this.currentFolderId, this.currentPaperId, notes);

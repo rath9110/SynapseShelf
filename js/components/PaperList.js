@@ -21,13 +21,20 @@ const PaperList = {
     container.innerHTML = `
       <div class="paper-list-view">
         <div class="paper-header">
-          <h1 style="font-size: 24px; font-weight: 700; color: var(--text-primary);">${this.escapeHtml(folderName)}</h1>
-          <button class="btn btn-primary" id="addPaperBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 5v14M5 12h14"/>
+          <button class="back-button" id="backToFoldersBtn" aria-label="Go back to folders">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            Add Paper
           </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <h1 style="font-size: 24px; font-weight: 700; color: var(--text-primary);">${this.escapeHtml(folderName)}</h1>
+            <button class="btn btn-primary" id="addPaperBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              Add Paper
+            </button>
+          </div>
         </div>
         ${folder.papers.length === 0 ? this.renderEmptyState() : this.renderPaperList(folder.papers)}
       </div>
@@ -37,6 +44,12 @@ const PaperList = {
     const addPaperBtn = container.querySelector('#addPaperBtn');
     addPaperBtn.addEventListener('click', async () => {
       await this.addCurrentTabAsPaper(folderId);
+    });
+
+    // Back to folders button
+    const backBtn = container.querySelector('#backToFoldersBtn');
+    backBtn.addEventListener('click', () => {
+      window.App.navigateToHome();
     });
 
     // Paper click listeners
