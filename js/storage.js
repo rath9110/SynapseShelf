@@ -155,6 +155,26 @@ const Storage = {
   },
 
   /**
+   * Update paper details (title and URL)
+   * @param {string} folderId - Folder ID
+   * @param {string} paperId - Paper ID
+   * @param {string} title - New paper title
+   * @param {string} url - New paper URL
+   */
+  async updatePaper(folderId, paperId, title, url) {
+    const data = await this.loadData();
+    const folder = data.folders.find(f => f.id === folderId);
+    if (folder) {
+      const paper = folder.papers.find(p => p.id === paperId);
+      if (paper) {
+        paper.title = title;
+        paper.url = url;
+        await this.saveData(data);
+      }
+    }
+  },
+
+  /**
    * Get a paper by ID
    * @param {string} folderId - Folder ID
    * @param {string} paperId - Paper ID
