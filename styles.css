@@ -1,0 +1,521 @@
+/* ==================== CSS Variables ==================== */
+:root {
+  /* Colors */
+  --primary: #4F46E5; /* Deep Scholastic Indigo */
+  --primary-hover: rgba(79, 70, 229, 0.1);
+  --secondary: #F8FAFC; /* Paper Surface Grey */
+  --text-primary: #1E293B; /* Dark off-black for readability */
+  --text-secondary: #64748B;
+  --border-color: #E2E8F0;
+  --error-color: #EF4444;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Transitions */
+  --transition-fast: 200ms ease;
+  --transition-medium: 300ms ease-out;
+}
+
+/* ==================== Reset & Base ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+/* ==================== Layout ==================== */
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-item:hover {
+  color: var(--primary);
+}
+
+.breadcrumb-item.active {
+  color: var(--text-primary);
+  pointer-events: none;
+}
+
+.breadcrumb-separator {
+  color: var(--border-color);
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+}
+
+/* ==================== Folder Grid View ==================== */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.folder-card {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.folder-card:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-hover);
+}
+
+.folder-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.folder-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--primary);
+}
+
+.folder-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.folder-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.folder-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.folder-card:hover .folder-actions {
+  opacity: 1;
+}
+
+.icon-button {
+  padding: var(--spacing-xs);
+  border-radius: 4px;
+  transition: background-color var(--transition-fast);
+  color: var(--text-secondary);
+}
+
+.icon-button:hover {
+  background-color: var(--primary-hover);
+  color: var(--primary);
+}
+
+/* ==================== Paper List View ==================== */
+.paper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.paper-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.paper-item {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: var(--spacing-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.paper-item:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-hover);
+}
+
+.paper-info {
+  flex: 1;
+}
+
+.paper-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.paper-url {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.paper-url:hover {
+  color: var(--primary);
+}
+
+.delete-button {
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  padding: var(--spacing-xs);
+  border-radius: 4px;
+}
+
+.paper-item:hover .delete-button {
+  opacity: 1;
+}
+
+.delete-button:hover {
+  color: var(--error-color);
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* ==================== Buttons ==================== */
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4338CA;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ==================== Empty State ==================== */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--spacing-md);
+  color: var(--border-color);
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-description {
+  font-size: 14px;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ==================== Modal ==================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 200ms;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  animation: slideUp var(--transition-medium);
+}
+
+.modal-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modal-body {
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-footer {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-hover);
+}
+
+/* ==================== Slide-over Panel ==================== */
+.slideover-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-medium);
+}
+
+.slideover-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.slideover-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 500px;
+  background: var(--secondary);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform var(--transition-medium);
+  display: flex;
+  flex-direction: column;
+}
+
+.slideover-panel.active {
+  transform: translateX(0);
+}
+
+.slideover-header {
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slideover-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.close-button {
+  color: var(--text-secondary);
+  padding: var(--spacing-xs);
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.close-button:hover {
+  background-color: var(--primary-hover);
+  color: var(--primary);
+}
+
+.slideover-content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+}
+
+.note-editor {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  background: white;
+  color: var(--text-primary);
+}
+
+.note-editor:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-hover);
+}
+
+/* ==================== Toast Notification ==================== */
+.toast {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: var(--primary);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all var(--transition-medium);
+}
+
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ==================== Animations ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==================== Scrollbar Styling ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

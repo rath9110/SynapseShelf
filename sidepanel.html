@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synapse Shelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header with Breadcrumb Navigation -->
+    <header class="header">
+      <nav class="breadcrumb" id="breadcrumb">
+        <span class="breadcrumb-item active">Home</span>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+      <!-- Views will be dynamically rendered here -->
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+      <span id="toastMessage">Saved!</span>
+    </div>
+
+    <!-- Slide-over Panel for Notes -->
+    <div class="slideover-overlay" id="slideoverOverlay"></div>
+    <div class="slideover-panel" id="slideoverPanel">
+      <div class="slideover-header">
+        <h2 id="slideoverTitle">Notes</h2>
+        <button class="close-button" id="closeSlideoverBtn" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="slideover-content">
+        <textarea 
+          class="note-editor" 
+          id="noteEditor" 
+          placeholder="Write your notes here... Markdown supported."
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/storage.js"></script>
+  <script src="js/components/FolderView.js"></script>
+  <script src="js/components/PaperList.js"></script>
+  <script src="js/components/NoteEditor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
