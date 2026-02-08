@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="container">
     <!-- Header with Breadcrumb Navigation -->
@@ -23,10 +25,6 @@
       <!-- Views will be dynamically rendered here -->
     </main>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-      <span id="toastMessage">Saved!</span>
-    </div>
 
     <!-- Slide-over Panel for Notes -->
     <div class="slideover-overlay" id="slideoverOverlay"></div>
@@ -35,16 +33,19 @@
         <h2 id="slideoverTitle">Notes</h2>
         <button class="close-button" id="closeSlideoverBtn" aria-label="Close">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
+            <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
       </div>
       <div class="slideover-content">
-        <textarea 
-          class="note-editor" 
-          id="noteEditor" 
-          placeholder="Write your notes here... Markdown supported."
-        ></textarea>
+        <textarea class="note-editor" id="noteEditor"
+          placeholder="Write your notes here... Markdown supported."></textarea>
+      </div>
+      <!-- Toast Notification below editor -->
+      <div class="toast-container">
+        <div class="toast" id="toast">
+          <span id="toastMessage">Saved</span>
+        </div>
       </div>
     </div>
   </div>
@@ -56,4 +57,5 @@
   <script src="js/components/NoteEditor.js"></script>
   <script src="js/app.js"></script>
 </body>
+
 </html>

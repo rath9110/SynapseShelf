@@ -89,10 +89,10 @@ const NoteEditor = {
                 clearTimeout(this.autoSaveTimeout);
             }
 
-            // Set new timeout (500ms after user stops typing)
+            // Set new timeout (3000ms = 3 seconds after user stops typing)
             this.autoSaveTimeout = setTimeout(() => {
                 this.saveNotes(true);
-            }, 500);
+            }, 3000);
         });
     },
 

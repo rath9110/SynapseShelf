@@ -494,26 +494,25 @@ textarea {
 }
 
 /* ==================== Toast Notification ==================== */
+.toast-container {
+  padding: 0 var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+}
+
 .toast {
-  position: fixed;
-  bottom: var(--spacing-lg);
-  right: var(--spacing-lg);
-  background: var(--primary);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 3000;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(20px);
-  transition: all var(--transition-medium);
+  transition: opacity var(--transition-medium);
 }
 
 .toast.show {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
 }
 
 /* ==================== Animations ==================== */

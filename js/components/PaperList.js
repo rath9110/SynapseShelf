@@ -68,9 +68,8 @@ const PaperList = {
       btn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const paperId = btn.dataset.paperId;
-        await Storage.deletePaper(folderId, paperId);
-        // Re-render the current view
-        window.App.renderCurrentView();
+        const paperTitle = btn.dataset.paperTitle;
+        this.showDeletePaperModal(folderId, paperId, paperTitle);
       });
     });
   },
@@ -115,7 +114,7 @@ const PaperList = {
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
               </button>
-              <button class="icon-button delete-button" data-paper-id="${paper.id}" title="Delete paper">
+              <button class="icon-button delete-button" data-paper-id="${paper.id}" data-paper-title="${this.escapeHtml(paper.title)}" title="Delete paper">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                 </svg>
@@ -262,6 +261,51 @@ const PaperList = {
 
     urlInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') handleSave();
+    });
+  },
+
+  /**
+   * Show delete paper confirmation modal
+   * @param {string} folderId - Folder ID
+   * @param {string} paperId - Paper ID
+   * @param {string} paperTitle - Paper title
+   */
+  showDeletePaperModal(folderId, paperId, paperTitle) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Delete Paper</h3>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete <strong>"${this.escapeHtml(paperTitle)}"</strong>?</p>
+          <p style="color: var(--text-secondary); font-size: 13px; margin-top: 8px;">This will permanently delete this paper and all its notes.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+          <button class="btn btn-primary" id="deleteBtn" style="background-color: var(--error-color);">Delete</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const deleteBtn = modal.querySelector('#deleteBtn');
+    const cancelBtn = modal.querySelector('#cancelBtn');
+
+    const closeModal = () => modal.remove();
+
+    deleteBtn.addEventListener('click', async () => {
+      await Storage.deletePaper(folderId, paperId);
+      this.showToast('Paper deleted');
+      closeModal();
+      window.App.renderCurrentView();
+    });
+
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
     });
   },
 
