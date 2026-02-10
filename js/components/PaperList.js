@@ -41,7 +41,24 @@ const PaperList = {
     // Add paper button
     const addPaperBtn = container.querySelector('#addPaperBtn');
     addPaperBtn.addEventListener('click', async () => {
-      await this.addCurrentTabAsPaper(folderId);
+      // Prevent multiple clicks
+      if (addPaperBtn.classList.contains('btn-loading')) return;
+
+      const originalText = addPaperBtn.innerHTML;
+      addPaperBtn.classList.add('btn-loading');
+      addPaperBtn.setAttribute('aria-busy', 'true');
+      addPaperBtn.disabled = true;
+
+      try {
+        await this.addCurrentTabAsPaper(folderId);
+      } finally {
+        addPaperBtn.classList.remove('btn-loading');
+        addPaperBtn.setAttribute('aria-busy', 'false');
+        addPaperBtn.disabled = false;
+        // Optimization: No need to restore text if view re-renders,
+        // but safe to do so in case of error where view might not re-render immediately
+        addPaperBtn.innerHTML = originalText;
+      }
     });
 
     // Back to folders button
@@ -119,13 +136,13 @@ const PaperList = {
               </a>
             </div>
             <div class="paper-actions">
-              <button class="icon-button edit-button" data-paper-id="${paper.id}" data-paper-title="${this.escapeHtml(paper.title)}" data-paper-url="${this.escapeHtml(paper.url)}" title="Edit paper">
+              <button class="icon-button edit-button" data-paper-id="${paper.id}" data-paper-title="${this.escapeHtml(paper.title)}" data-paper-url="${this.escapeHtml(paper.url)}" title="Edit paper" aria-label="Edit paper ${this.escapeHtml(paper.title)}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
               </button>
-              <button class="icon-button delete-button" data-paper-id="${paper.id}" data-paper-title="${this.escapeHtml(paper.title)}" title="Delete paper">
+              <button class="icon-button delete-button" data-paper-id="${paper.id}" data-paper-title="${this.escapeHtml(paper.title)}" title="Delete paper" aria-label="Delete paper ${this.escapeHtml(paper.title)}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                 </svg>
@@ -170,6 +187,7 @@ const PaperList = {
       console.error('Error adding paper:', error);
       this.showToast('Failed to add paper');
     }
+    // Finally block is handled in the click event listener
   },
 
   /**
